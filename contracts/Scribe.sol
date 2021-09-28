@@ -1,5 +1,6 @@
 pragma solidity ^0.5.12;
 
+// TODO: import erC20? Or import special DADA modified ERC-20 possible?
 import "../node_modules/openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
 
 /** 
@@ -28,19 +29,22 @@ library Utilities {
 }
 
 /*
- * @title Contract that allows an NFT owner to dictate a message attached to the token.
- * There's no limit on the number of messages they can dictate or the length for a single message
+ * @title Contract that allows an owner of a Creep to scribe a message attached to the token.
+ * There's no limit on the number of messages they can scribe or the length for a single message
+ * Each message is an on-chain transaction requiring gas
  * @dev Conlan Rios
+ * Modified by sparrow
  */
 contract Scribe {
 	// A record event that emits each time an owner dictates a message
 	event Record (
 		// the address of who dicated this document
 		address dictator,
-		// The NFT address
+		// The Creeps contract address
         address tokenAddress,
-        // The NFT tokenId
-        uint tokenId,
+        // The Creep drawingID and printIndex
+        uint drawingId,
+	uint printIndex,
         // The text of the dictation
         string text
     );
@@ -62,8 +66,9 @@ contract Scribe {
 	mapping (bytes => uint) public documentsCount;
 
 	// Function for dictating an owner message
-	function dictate(address _tokenAddress, uint256 _tokenId, string memory _text) public {
+	function dictate(address _tokenAddress, uint256 _drawingId, uint256 printIndex, string memory _text) public {
 		// check that the message sender owns the token at _tokenAddress
+		//TODO: convert from ERC721 to DADA modified ERC-20
 		require(ERC721(_tokenAddress).ownerOf(_tokenId) == msg.sender, "Sender not authorized to dictate.");
 		// get the document key for this address and token id
 		bytes memory documentKey = getDocumentKey(_tokenAddress, _tokenId);
@@ -72,11 +77,12 @@ contract Scribe {
 		// increase the documents counter for this key
 		documentsCount[documentKey]++;
 		// emit an event for this newly created record
-		emit Record(msg.sender, _tokenAddress, _tokenId, _text);
+		emit Record(msg.sender, _tokenAddress, _drawingId, _printIndex, _text);
 	}
 
-	// Function for getting the document key for a given NFT address + tokenId
-	function getDocumentKey(address _tokenAddress, uint256 _tokenId) public pure returns (bytes memory) {
+	// Function for getting the document key for a given Creep address + drawingId + printIndex
+	function getDocumentKey(address _tokenAddress, uint256 _drawingId, _printIndex) public pure returns (bytes memory) {
+	        //TODO: work out how best to address one single modified ERC-20 on next line
 		return Utilities.concat(Utilities.toBytes(_tokenAddress), Utilities.toBytes(_tokenId));
 	}
 }
