@@ -41,9 +41,8 @@ contract Scribe {
 		// the address of who dicated this document
 		address dictator,
 		// The Creeps contract address
-        address tokenAddress,
-        // The Creep drawingID and printIndex
-        uint drawingId,
+        address 0x068696a3cf3c4676b65f1c9975dd094260109d02,
+        // The Creep printIndex
 	uint printIndex,
         // The text of the dictation
         string text
@@ -66,23 +65,24 @@ contract Scribe {
 	mapping (bytes => uint) public documentsCount;
 
 	// Function for dictating an owner message
-	function dictate(address _tokenAddress, uint256 _drawingId, uint256 printIndex, string memory _text) public {
-		// check that the message sender owns the token at _tokenAddress
-		//TODO: convert from ERC721 to DADA modified ERC-20
-		require(ERC721(_tokenAddress).ownerOf(_tokenId) == msg.sender, "Sender not authorized to dictate.");
+	function dictate(uint256 printIndex, string memory _text) public {
+		// check that the message sender owns the token 
+		// the function in DadaCollectible.sol that returns the owner address given a unique printIndex
+		// is DrawingPrintToAddress
+		require(DrawingPrintToAddress(_printIndex) == msg.sender, "Sender not authorized to dictate.");
 		// get the document key for this address and token id
-		bytes memory documentKey = getDocumentKey(_tokenAddress, _tokenId);
+		bytes memory documentKey = getDocumentKey(_printIndex);
 		// push a new document with the dictator address, message, and timestamp
 		documents[documentKey].push(Document(msg.sender, _text, block.timestamp));
 		// increase the documents counter for this key
 		documentsCount[documentKey]++;
 		// emit an event for this newly created record
-		emit Record(msg.sender, _tokenAddress, _drawingId, _printIndex, _text);
+		emit Record(msg.sender, _printIndex, _text);
 	}
 
 	// Function for getting the document key for a given Creep address + drawingId + printIndex
-	function getDocumentKey(address _tokenAddress, uint256 _drawingId, _printIndex) public pure returns (bytes memory) {
-	        //TODO: work out how best to address one single modified ERC-20 on next line
-		return Utilities.concat(Utilities.toBytes(_tokenAddress), Utilities.toBytes(_tokenId));
+	function getDocumentKey( _printIndex) public pure returns (bytes memory) {
+	        //each modified ERC-20 token can be uniquely addressed by printIndex
+		return Utilities.concat(Utilities.toBytes(_tokenAddress), Utilities.toBytes(_printIndex));
 	}
 }
