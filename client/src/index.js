@@ -18,16 +18,26 @@ import {
   // network
 } from "./connectors";
 
+const drawingMap = require('./lib/drawingMap.json')
+const nameMap = require('./lib/nameMap.json')
+import { printToDrawingId } from "./lib/printList";
+
 import { useEagerConnect, useInactiveListener } from "./hooks";
 
 const ethers = require('ethers');
 
 const SCRIBE_CONTRACT_ABI = [{"inputs":[{"internalType":"address","name":"dictator","type":"address","indexed":false},{"internalType":"address","name":"tokenAddress","type":"address","indexed":false},{"indexed":false,"internalType":"uint256","name":"tokenId","type":"uint256"},{"indexed":false,"internalType":"string","name":"text","type":"string"}],"type":"event","anonymous":false,"name":"Record"},{"inputs":[{"internalType":"address","name":"_tokenAddress","type":"address"},{"internalType":"uint256","name":"_tokenId","type":"uint256"},{"internalType":"string","name":"_text","type":"string"}],"name":"dictate","type":"function","constant":false,"outputs":[],"payable":false,"stateMutability":"nonpayable"},{"inputs":[{"internalType":"bytes","name":"","type":"bytes"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"documents","type":"function","constant":true,"outputs":[{"internalType":"address","name":"dictator","type":"address"},{"internalType":"string","name":"text","type":"string"},{"internalType":"uint256","name":"creationTime","type":"uint256"}],"payable":false,"stateMutability":"view"},{"inputs":[{"internalType":"bytes","name":"","type":"bytes"}],"name":"documentsCount","type":"function","constant":true,"outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view"},{"constant":true,"inputs":[{"internalType":"address","name":"_tokenAddress","type":"address"},{"internalType":"uint256","name":"_tokenId","type":"uint256"}],"name":"getDocumentKey","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"payable":false,"stateMutability":"pure","type":"function"}]
 const ERC721_CONTRACT_ABI = [{ "constant": true, "inputs": [{ "name": "tokenId", "type": "uint256" }], "name": "tokenURI", "outputs": [{ "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "name": "_tokenId", "type": "uint256" }], "name": "ownerOf", "outputs": [{ "name": "_owner", "type": "address" }], "payable": false, "stateMutability": "view", "type": "function" }]
+const DADA_CONTRACT_ABI = [ { "constant": true, "inputs": [], "name": "name", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "state", "type": "bool" } ], "name": "flipSwitchTo", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "to", "type": "address" }, { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" } ], "name": "transfer", "outputs": [ { "name": "success", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" } ], "name": "buyCollectible", "outputs": [], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "address" } ], "name": "balances", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "decimals", "outputs": [ { "name": "", "type": "uint8" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "minPrice", "type": "uint256" }, { "name": "printIndex", "type": "uint256" } ], "name": "acceptBidForCollectible", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [], "name": "withdraw", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "to", "type": "address" }, { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" }, { "name": "lastSellValue", "type": "uint256" } ], "name": "makeCollectibleUnavailableToSale", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "OfferedForSale", "outputs": [ { "name": "isForSale", "type": "bool" }, { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" }, { "name": "seller", "type": "address" }, { "name": "minValue", "type": "uint256" }, { "name": "onlySellTo", "type": "address" }, { "name": "lastSellValue", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" }, { "name": "minSalePriceInWei", "type": "uint256" }, { "name": "toAddress", "type": "address" } ], "name": "offerCollectibleForSaleToAddress", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "DrawingPrintToAddress", "outputs": [ { "name": "", "type": "address" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "drawingIdToCollectibles", "outputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "checkSum", "type": "string" }, { "name": "totalSupply", "type": "uint256" }, { "name": "nextPrintIndexToAssign", "type": "uint256" }, { "name": "allPrintsAssigned", "type": "bool" }, { "name": "initialPrice", "type": "uint256" }, { "name": "initialPrintIndex", "type": "uint256" }, { "name": "collectionName", "type": "string" }, { "name": "authorUId", "type": "uint256" }, { "name": "scarcity", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "_owner", "type": "address" } ], "name": "balanceOf", "outputs": [ { "name": "balance", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "Bids", "outputs": [ { "name": "hasBid", "type": "bool" }, { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" }, { "name": "bidder", "type": "address" }, { "name": "value", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" } ], "name": "enterBidForCollectible", "outputs": [], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": false, "inputs": [ { "name": "amount", "type": "uint256" } ], "name": "mintNewDrawings", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "symbol", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" } ], "name": "alt_buyCollectible", "outputs": [], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" } ], "name": "withdrawOfferForCollectible", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "checkSum", "type": "string" }, { "name": "_totalSupply", "type": "uint256" }, { "name": "initialPrice", "type": "uint256" }, { "name": "initialPrintIndex", "type": "uint256" }, { "name": "collectionName", "type": "string" }, { "name": "authorUId", "type": "uint256" }, { "name": "scarcity", "type": "string" } ], "name": "newCollectible", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" }, { "name": "minSalePriceInWei", "type": "uint256" } ], "name": "offerCollectibleForSale", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "address" } ], "name": "pendingWithdrawals", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" } ], "name": "withdrawBidForCollectible", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "to", "type": "address" }, { "indexed": false, "name": "collectibleIndex", "type": "uint256" }, { "indexed": false, "name": "printIndex", "type": "uint256" } ], "name": "Assigned", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }, { "indexed": false, "name": "value", "type": "uint256" } ], "name": "Transfer", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }, { "indexed": false, "name": "collectibleIndex", "type": "uint256" }, { "indexed": false, "name": "printIndex", "type": "uint256" } ], "name": "CollectibleTransfer", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "collectibleIndex", "type": "uint256" }, { "indexed": true, "name": "printIndex", "type": "uint256" }, { "indexed": false, "name": "minValue", "type": "uint256" }, { "indexed": true, "name": "toAddress", "type": "address" }, { "indexed": false, "name": "lastSellValue", "type": "uint256" } ], "name": "CollectibleOffered", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "collectibleIndex", "type": "uint256" }, { "indexed": true, "name": "printIndex", "type": "uint256" }, { "indexed": false, "name": "value", "type": "uint256" }, { "indexed": true, "name": "fromAddress", "type": "address" } ], "name": "CollectibleBidEntered", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "collectibleIndex", "type": "uint256" }, { "indexed": true, "name": "printIndex", "type": "uint256" }, { "indexed": false, "name": "value", "type": "uint256" }, { "indexed": true, "name": "fromAddress", "type": "address" } ], "name": "CollectibleBidWithdrawn", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "collectibleIndex", "type": "uint256" }, { "indexed": false, "name": "printIndex", "type": "uint256" }, { "indexed": false, "name": "value", "type": "uint256" }, { "indexed": true, "name": "fromAddress", "type": "address" }, { "indexed": true, "name": "toAddress", "type": "address" } ], "name": "CollectibleBought", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "collectibleIndex", "type": "uint256" }, { "indexed": true, "name": "printIndex", "type": "uint256" } ], "name": "CollectibleNoLongerForSale", "type": "event" } ]
 
 const SCRIBE_CONTRACT_ADDRESS_ROPSTEN = "0x9831151655180132E6131AB35A82a5e32C149116" // Ropsten
 const SCRIBE_CONTRACT_ADDRESS_GOERLI = "0x284Dc68Afe4b30793acb7507a0Ae029d91bf698e" // Goerli
 const SCRIBE_CONTRACT_ADDRESS_MAINNET = "0xC207efACb12a126D382fA28460BB815F336D845f" // Mainnet
+
+const DADA_CONTRACT_ADDRESS_ROPSTEN = "0x3a4b0e28bb7f4b5a4e8302a677a2bdb43fecb3cf"
+const DADA_CONTRACT_ADDRESS_MAINNET = "0x068696a3cf3c4676b65f1c9975dd094260109d02"
+
+const IMAGE_BASE = "https://raw.githubusercontent.com/powerdada/dada_sc/master/cw_drawings/"
 
 var currentTokenAddress = "";
 var currentTokenId = 0;
@@ -198,6 +208,14 @@ function MyComponent(props) {
 
     return ""
   }
+  function getDadaContractAddress(chainId) {
+    if (chainId === 1) {
+      return DADA_CONTRACT_ADDRESS_MAINNET;
+    } else if (chainId === 3) {
+      return DADA_CONTRACT_ADDRESS_ROPSTEN
+    } 
+    return ""
+  }
 
   // get the name of the network for a chain id
   function getNetworkName(chainId) {
@@ -239,14 +257,6 @@ function MyComponent(props) {
     } 
   }
   
-  // Return the currently inputted token address
-  function getTokenAddressInput() {    
-    var tokenAddressField = document.getElementById("tokenAddress")
-
-    var address = tokenAddressField.value;
-
-    return cleanAddressInput(address)  
-  }
 
   // Retrieve the fast gas price from ETHGasStation
   function getGasPrice(callback) {
@@ -324,12 +334,6 @@ function MyComponent(props) {
   }
 
   function checkValidToken() {
-    var tokenAddress = getTokenAddressInput();
-    
-    if (tokenAddress == null) {
-      window.alert("Please provide a valid ERC721 contract address.")
-      return false
-    }
 
     var tokenId = getTokenIDInput()
     if (tokenId == null) {
@@ -368,7 +372,7 @@ function MyComponent(props) {
     })
 
     var tokenId = getTokenIDInput();
-    var tokenAddress = getTokenAddressInput();
+    var tokenAddress = getDadaContractAddress(chainId)
 
 
     // TODO insert developer API Key
@@ -409,24 +413,11 @@ function MyComponent(props) {
   		});
 
 		  // Get the details from the token URI
-	 	 var tokenContract = new ethers.Contract(tokenAddress, ERC721_CONTRACT_ABI, ethers.getDefaultProvider(chainId))
+      setNFTPreviewData({
+        url : IMAGE_BASE + drawingMap[printToDrawingId(tokenId)],
+        title : nameMap[printToDrawingId(tokenId)]
+      })
 
-  		tokenContract.tokenURI(tokenId).then(tokenUri => {
-  		  try {
-  		    let tokenUriParsed = JSON.parse(tokenUri)
-
-  		    if (!!tokenUriParsed.ipfs) {
-  		    	setNFTPreviewData({
-  	  		  	url : "https://ipfs.infura.io/ipfs/" + tokenUriParsed.ipfs,
-  		  			title : nftTitle
-  		  		})
-  		    }        
-  		  } catch (e) {
-  		    // ignore error, many tokens will error since not a json object
-  		  }
-  		}).catch((e) => {
-  		  // ignore error, any token that doesn't have the `tokenURI` function will fail here.
-  		})
       }).catch(error => {      
         window.alert(error)
 
@@ -446,9 +437,8 @@ function MyComponent(props) {
 
   function generateShareLink() {
       var tokenId = getTokenIDInput();
-      var tokenAddress = getTokenAddressInput();
 
-      return "https://conlan.github.io/nft-scribe/?address=" + tokenAddress + "&id=" + tokenId;
+      return "https://conlan.github.io/nft-scribe/?id=" + tokenId;
   }
 
   function getTwitterUserForContract(tokenAddress) {
@@ -495,7 +485,7 @@ function MyComponent(props) {
   		}
 
   		// detect which contract we're using and append tweet names if found
-  		var twitterUserForContract = getTwitterUserForContract(getTokenAddressInput())
+  		var twitterUserForContract = 'PowerDada'
 
   		var tweetText = "See scribed messages for \"" + tokenName + "\" ";
 
@@ -546,7 +536,7 @@ function MyComponent(props) {
   }
 
   async function loadToken() {
-    var tokenAddress = getTokenAddressInput();
+    var tokenAddress = getDadaContractAddress(chainId)
     var tokenId = getTokenIDInput()    
 
     var provider = ethers.getDefaultProvider(chainId)
@@ -577,9 +567,9 @@ function MyComponent(props) {
     setTokenDocuments(documents)
 
     // check if we're the owner of this token
-    var tokenContract = new ethers.Contract(currentTokenAddress, ERC721_CONTRACT_ABI, provider)
+    var tokenContract = new ethers.Contract(tokenAddress, DADA_CONTRACT_ABI, provider)
 
-    var ownerOfTokenAddress = await tokenContract.ownerOf(currentTokenId)
+    var ownerOfTokenAddress = await tokenContract.DrawingPrintToAddress(currentTokenId)
     
     setIsTokenOwner(account === ownerOfTokenAddress)
 
@@ -701,8 +691,6 @@ function MyComponent(props) {
         <br/>
           <div>
             <div className="main-section">
-                <label><b>Token Address</b></label>
-                  <input id="tokenAddress" placeholder="0x..."/>
               
                 <label><b>Token ID</b></label>
                   <input id="tokenId" type="number" placeholder="0, 1, 2, 3..." min="0" defaultValue="0"/>
