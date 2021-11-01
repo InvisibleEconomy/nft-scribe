@@ -30,11 +30,10 @@ const SCRIBE_CONTRACT_ABI = [{"inputs":[{"internalType":"address","name":"dictat
 const ERC721_CONTRACT_ABI = [{ "constant": true, "inputs": [{ "name": "tokenId", "type": "uint256" }], "name": "tokenURI", "outputs": [{ "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "name": "_tokenId", "type": "uint256" }], "name": "ownerOf", "outputs": [{ "name": "_owner", "type": "address" }], "payable": false, "stateMutability": "view", "type": "function" }]
 const DADA_CONTRACT_ABI = [ { "constant": true, "inputs": [], "name": "name", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "state", "type": "bool" } ], "name": "flipSwitchTo", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "to", "type": "address" }, { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" } ], "name": "transfer", "outputs": [ { "name": "success", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" } ], "name": "buyCollectible", "outputs": [], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "address" } ], "name": "balances", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "decimals", "outputs": [ { "name": "", "type": "uint8" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "minPrice", "type": "uint256" }, { "name": "printIndex", "type": "uint256" } ], "name": "acceptBidForCollectible", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [], "name": "withdraw", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "to", "type": "address" }, { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" }, { "name": "lastSellValue", "type": "uint256" } ], "name": "makeCollectibleUnavailableToSale", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "OfferedForSale", "outputs": [ { "name": "isForSale", "type": "bool" }, { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" }, { "name": "seller", "type": "address" }, { "name": "minValue", "type": "uint256" }, { "name": "onlySellTo", "type": "address" }, { "name": "lastSellValue", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" }, { "name": "minSalePriceInWei", "type": "uint256" }, { "name": "toAddress", "type": "address" } ], "name": "offerCollectibleForSaleToAddress", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "DrawingPrintToAddress", "outputs": [ { "name": "", "type": "address" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "drawingIdToCollectibles", "outputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "checkSum", "type": "string" }, { "name": "totalSupply", "type": "uint256" }, { "name": "nextPrintIndexToAssign", "type": "uint256" }, { "name": "allPrintsAssigned", "type": "bool" }, { "name": "initialPrice", "type": "uint256" }, { "name": "initialPrintIndex", "type": "uint256" }, { "name": "collectionName", "type": "string" }, { "name": "authorUId", "type": "uint256" }, { "name": "scarcity", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "_owner", "type": "address" } ], "name": "balanceOf", "outputs": [ { "name": "balance", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "uint256" } ], "name": "Bids", "outputs": [ { "name": "hasBid", "type": "bool" }, { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" }, { "name": "bidder", "type": "address" }, { "name": "value", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" } ], "name": "enterBidForCollectible", "outputs": [], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": false, "inputs": [ { "name": "amount", "type": "uint256" } ], "name": "mintNewDrawings", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "symbol", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" } ], "name": "alt_buyCollectible", "outputs": [], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" } ], "name": "withdrawOfferForCollectible", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "checkSum", "type": "string" }, { "name": "_totalSupply", "type": "uint256" }, { "name": "initialPrice", "type": "uint256" }, { "name": "initialPrintIndex", "type": "uint256" }, { "name": "collectionName", "type": "string" }, { "name": "authorUId", "type": "uint256" }, { "name": "scarcity", "type": "string" } ], "name": "newCollectible", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" }, { "name": "minSalePriceInWei", "type": "uint256" } ], "name": "offerCollectibleForSale", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "", "type": "address" } ], "name": "pendingWithdrawals", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "drawingId", "type": "uint256" }, { "name": "printIndex", "type": "uint256" } ], "name": "withdrawBidForCollectible", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "to", "type": "address" }, { "indexed": false, "name": "collectibleIndex", "type": "uint256" }, { "indexed": false, "name": "printIndex", "type": "uint256" } ], "name": "Assigned", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }, { "indexed": false, "name": "value", "type": "uint256" } ], "name": "Transfer", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }, { "indexed": false, "name": "collectibleIndex", "type": "uint256" }, { "indexed": false, "name": "printIndex", "type": "uint256" } ], "name": "CollectibleTransfer", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "collectibleIndex", "type": "uint256" }, { "indexed": true, "name": "printIndex", "type": "uint256" }, { "indexed": false, "name": "minValue", "type": "uint256" }, { "indexed": true, "name": "toAddress", "type": "address" }, { "indexed": false, "name": "lastSellValue", "type": "uint256" } ], "name": "CollectibleOffered", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "collectibleIndex", "type": "uint256" }, { "indexed": true, "name": "printIndex", "type": "uint256" }, { "indexed": false, "name": "value", "type": "uint256" }, { "indexed": true, "name": "fromAddress", "type": "address" } ], "name": "CollectibleBidEntered", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "collectibleIndex", "type": "uint256" }, { "indexed": true, "name": "printIndex", "type": "uint256" }, { "indexed": false, "name": "value", "type": "uint256" }, { "indexed": true, "name": "fromAddress", "type": "address" } ], "name": "CollectibleBidWithdrawn", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "collectibleIndex", "type": "uint256" }, { "indexed": false, "name": "printIndex", "type": "uint256" }, { "indexed": false, "name": "value", "type": "uint256" }, { "indexed": true, "name": "fromAddress", "type": "address" }, { "indexed": true, "name": "toAddress", "type": "address" } ], "name": "CollectibleBought", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "collectibleIndex", "type": "uint256" }, { "indexed": true, "name": "printIndex", "type": "uint256" } ], "name": "CollectibleNoLongerForSale", "type": "event" } ]
 
-const SCRIBE_CONTRACT_ADDRESS_ROPSTEN = "0x9831151655180132E6131AB35A82a5e32C149116" // Ropsten
-const SCRIBE_CONTRACT_ADDRESS_GOERLI = "0x284Dc68Afe4b30793acb7507a0Ae029d91bf698e" // Goerli
+const SCRIBE_CONTRACT_ADDRESS_ROPSTEN = "0xbc2Df256FA6FAd53BfBf0a054aBF43561AcAafe3" // Ropsten
 const SCRIBE_CONTRACT_ADDRESS_MAINNET = "0xC207efACb12a126D382fA28460BB815F336D845f" // Mainnet
 
-const DADA_CONTRACT_ADDRESS_ROPSTEN = "0x3a4b0e28bb7f4b5a4e8302a677a2bdb43fecb3cf"
+const DADA_CONTRACT_ADDRESS_ROPSTEN = "0xbc2Df256FA6FAd53BfBf0a054aBF43561AcAafe3"
 const DADA_CONTRACT_ADDRESS_MAINNET = "0x068696a3cf3c4676b65f1c9975dd094260109d02"
 
 const IMAGE_BASE = "https://raw.githubusercontent.com/powerdada/dada_sc/master/cw_drawings/"
@@ -202,8 +201,6 @@ function MyComponent(props) {
       return SCRIBE_CONTRACT_ADDRESS_MAINNET;
     } else if (chainId === 3) {
       return SCRIBE_CONTRACT_ADDRESS_ROPSTEN
-    } else if (chainId === 5) {
-      return SCRIBE_CONTRACT_ADDRESS_GOERLI;
     }
 
     return ""
@@ -221,8 +218,8 @@ function MyComponent(props) {
   function getNetworkName(chainId) {
     if (chainId === 1) {
       return "Mainnet"
-    } else if (chainId === 5) {
-      return "Goerli"
+    } else if (chainId === 3) {
+      return "Ropsten"
     } else {
       return "..."
     }
@@ -375,7 +372,8 @@ function MyComponent(props) {
     var tokenAddress = getDadaContractAddress(chainId)
 
 
-    // TODO insert developer API Key
+    // TODO insert developer API Key ??
+    // Maybe when there is a wrapper 
     var openseaURL = "https://api.opensea.io/api/v1/assets?token_ids=" + tokenId + "&asset_contract_address=" + tokenAddress;
 
     console.log(openseaURL)
@@ -446,7 +444,9 @@ function MyComponent(props) {
 
   	// TODO put these in a file somewhere
   	if ((tokenAddress === "0xb932a70A57673d89f4acfFBE830E8ed7f75Fb9e0".toLowerCase()) ||
-  		(tokenAddress === "0x41A322b28D0fF354040e2CbC676F0320d8c8850d".toLowerCase())) {
+  		(tokenAddress === "0xbc2Df256FA6FAd53BfBf0a054aBF43561AcAafe3".toLowerCase())) {
+  		return "2017 Creeps";
+	} else if (tokenAddress === "0x41A322b28D0fF354040e2CbC676F0320d8c8850d".toLowerCase())) {
   		return "SuperRare_co";
   	} else if (tokenAddress === "0x1d963688FE2209A98dB35C67A041524822Cf04ff".toLowerCase()) {
   		return "marble_cards";
@@ -627,7 +627,7 @@ function MyComponent(props) {
 
       // check if we received some parameters in the URL
       if ((autoLoadAddress !== null) && (autoLoadId !== null)) {
-        console.log("found valid address + id, loading token...")
+        console.log("found the Creep, loading token...")
 
         window.requestAnimationFrame(function() {  
           document.getElementById("tokenAddress").value = autoLoadAddress;
@@ -653,12 +653,12 @@ function MyComponent(props) {
   return (
     <div>
       <div className="padded-div">
-        <label><i>NFT Scribe</i> is a smart contract that allows ERC721 owners to append onchain messages and annotations to their tokens.</label>
+        <label><i>NFT Scribe</i> is a smart contract that allows Creep owners to append onchain messages and annotations to their tokens.</label>
       </div>
       <hr/>
         <div className="center-header-images-container">
           <div className="inner-header-images">
-            <img className="hero-image" src="scribe.gif" alt="Scribe"/>
+            <img className="hero-image" src="dada.jpeg" alt="Scribe"/>
             
             {(NFTPreviewData.url.length === 0) && (<img className="nft-outline" alt="Outline" src="nft_outline.png"/>)}
 
@@ -692,7 +692,7 @@ function MyComponent(props) {
           <div>
             <div className="main-section">
               
-                <label><b>Token ID</b></label>
+                <label><b>printIndex</b></label>
                   <input id="tokenId" type="number" placeholder="0, 1, 2, 3..." min="0" defaultValue="0"/>
             
               <div className="button-container">
@@ -700,7 +700,7 @@ function MyComponent(props) {
                   <button disabled={(loadingState === LoadingState.LOADING_RECORDS)}  className="load-erc" onClick={() => {
                       onLoadTokenClicked()                      
                     }}
-                  ><b>Load ERC721</b></button>
+                  ><b>Load Creep</b></button>
                 )}
                 {
                   (!!(library) === false) && (
@@ -741,13 +741,13 @@ function MyComponent(props) {
           </div>
       <hr/>
         <div className="padded-div">
-          <label>Version 1.0.8 | <b><a href="https://github.com/conlan/nft-scribe" target="_blank" rel="noopener noreferrer">Github</a></b> | <b><a href="https://etherscan.io/address/0xC207efACb12a126D382fA28460BB815F336D845f" target="_blank" rel="noopener noreferrer">Contract</a></b> | <b><a href="https://twitter.com/conlan" target="_blank" rel="noopener noreferrer">@Conlan</a></b> | <b><a href="https://www.cryptovoxels.com/play?coords=S@279E,418N" target="_blank" rel="noopener noreferrer">Cryptovoxels</a></b> | </label>
+          <label>Version 1.0.0 | <b><a href="https://github.com/InvisibleEconomy/nft-scribe" target="_blank" rel="noopener noreferrer">Github</a></b> | <b><a href="https://etherscan.io/address/0xbc2Df256FA6FAd53BfBf0a054aBF43561AcAafe3" target="_blank" rel="noopener noreferrer">Contract</a></b> | <b><a href="https://twitter.com/powerdada" target="_blank" rel="noopener noreferrer">@PowerDADA</a></b> | <b><a href="https://www.cryptovoxels.com/play?coords=N@846E,240S" target="_blank" rel="noopener noreferrer">Cryptovoxels</a></b> | </label>
           
           <label>⛓{getNetworkName(chainId)}</label>     
           <br/>
           <label>Please use at your own risk and double check <a href="https://ethgasstation.info/" target="_blank" rel="noopener noreferrer">gas price</a> before submitting transaction ⛽</label>               
           <br/>
-          <label>Image and name metadata powered by <a href="https://opensea.io/" target="_blank" rel="noopener noreferrer">OpenSea</a></label>
+          <label>Image and name metadata powered by <a href="https://creeps.dada.nyc/marketplace/" target="_blank" rel="noopener noreferrer">OpenSea</a></label>
           <br/>
           <label><a href="https://giphy.com/stickers/geometric-heysp-illustrated-geometry-c6XT7hN1iSuUoNxD1b" target="_blank" rel="noopener noreferrer">Loading GIF Source</a></label>          
         </div>
