@@ -18,11 +18,12 @@ import {
   // network
 } from "./connectors";
 
-const drawingMap = require('./lib/drawingMap.json')
-const nameMap = require('./lib/nameMap.json')
 import { printToDrawingId } from "./lib/printList";
 
 import { useEagerConnect, useInactiveListener } from "./hooks";
+
+const drawingMap = require('./lib/drawingMap.json')
+const nameMap = require('./lib/nameMap.json')
 
 const ethers = require('ethers');
 
