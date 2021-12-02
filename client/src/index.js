@@ -447,7 +447,7 @@ function MyComponent(props) {
   	if ((tokenAddress === "0xb932a70A57673d89f4acfFBE830E8ed7f75Fb9e0".toLowerCase()) ||
   		(tokenAddress === "0xbc2Df256FA6FAd53BfBf0a054aBF43561AcAafe3".toLowerCase())) {
   		return "2017 Creeps";
-	} else if (tokenAddress === "0x41A322b28D0fF354040e2CbC676F0320d8c8850d".toLowerCase())) {
+	} else if (tokenAddress === "0x41A322b28D0fF354040e2CbC676F0320d8c8850d".toLowerCase()) {
   		return "SuperRare_co";
   	} else if (tokenAddress === "0x1d963688FE2209A98dB35C67A041524822Cf04ff".toLowerCase()) {
   		return "marble_cards";
