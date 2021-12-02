@@ -660,7 +660,7 @@ function MyComponent(props) {
       <hr/>
         <div className="center-header-images-container">
           <div className="inner-header-images">
-            <img className="hero-image" src="creeps.png" alt="Scribe"/>
+            <img className="hero-image" src="creeps.png" alt="Creep"/>
             
             {(NFTPreviewData.url.length === 0) && (<img className="nft-outline" alt="Outline" src="nft_outline.png"/>)}
 
