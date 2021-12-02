@@ -1,5 +1,30 @@
 pragma solidity ^0.5.12;
 
+/** 
+ * Utilities library
+ */
+library Utilities {
+	// concat two bytes objects
+    function concat(bytes memory a, bytes memory b)
+            internal pure returns (bytes memory) {
+        return abi.encodePacked(a, b);
+    }
+
+    // convert address to bytes
+    function toBytes(address x) internal pure returns (bytes memory b) { 
+		b = new bytes(20); 
+	
+		for (uint i = 0; i < 20; i++) 
+			b[i] = byte(uint8(uint(x) / (2**(8*(19 - i))))); 
+	}
+
+	// convert uint256 to bytes
+	function toBytes(uint256 x) internal pure returns (bytes memory b) {
+    	b = new bytes(32);
+    	assembly { mstore(add(b, 32), x) }
+	}
+}
+
 
 interface DadaCollectible {
     function DrawingPrintToAddress(uint256) external view returns (address);
@@ -63,9 +88,9 @@ address creepsContract = 0xbc2Df256FA6FAd53BfBf0a054aBF43561AcAafe3;
 		emit Record(msg.sender, printIndex, _text);
 	}
 	
-	// Function for getting the document key for a given NFT address + tokenId
-	function getDocumentKey(address _tokenAddress, uint256 _tokenId) public pure returns (bytes memory) {
-		return Utilities.concat(Utilities.toBytes(_tokenAddress), Utilities.toBytes(_tokenId));
+	// Function for getting the document key for a given printIndex
+	function getDocumentKey(uint256 _printIndex) public pure returns (bytes memory) {
+		return Utilities.toBytes(_printIndex);
 	}
 
 }
