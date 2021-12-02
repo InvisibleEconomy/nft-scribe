@@ -62,5 +62,10 @@ address creepsContract = 0xbc2Df256FA6FAd53BfBf0a054aBF43561AcAafe3;
 		// emit an event for this newly created record
 		emit Record(msg.sender, printIndex, _text);
 	}
+	
+	// Function for getting the document key for a given NFT address + tokenId
+	function getDocumentKey(address _tokenAddress, uint256 _tokenId) public pure returns (bytes memory) {
+		return Utilities.concat(Utilities.toBytes(_tokenAddress), Utilities.toBytes(_tokenId));
+	}
 
 }
