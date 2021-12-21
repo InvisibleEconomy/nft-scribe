@@ -38,8 +38,8 @@ interface DadaCollectible {
  * Modified by sparrow
  */
 contract Scribe {
-//address creepsContract = 0x068696A3cf3c4676B65F1c9975dd094260109d02;
-address creepsContract = 0xbc2Df256FA6FAd53BfBf0a054aBF43561AcAafe3;
+address creepsContract = 0x068696A3cf3c4676B65F1c9975dd094260109d02;
+//address creepsContract = 0xbc2Df256FA6FAd53BfBf0a054aBF43561AcAafe3;
 // A record event that emits each time an owner dictates a message
 	event Record (
 	// the address of who dicated this document
