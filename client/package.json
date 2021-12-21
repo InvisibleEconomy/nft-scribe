@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://conlan.github.io/nft-scribe",
+  "homepage": "https://invisibleeconomy.github.io/nft-scribe",
   "dependencies": {
     "@ethersproject/providers": "^5.0.0-beta.146",
     "@ethersproject/units": "^5.0.0-beta.132",
