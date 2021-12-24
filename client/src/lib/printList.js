@@ -12,7 +12,7 @@ const initialPrintIndexes = [
   4480, 4580, 4730, 4880, 4980, 5130, 5330, 5400, 5600, 5670, 5770, 5970, 6070, 6140, 6340, 6490, 6640, 6790, 6940, 7140, 7340, 7490, 7690, 7840,
   7990, 8000, 8200, 8350, 8550, 8750, 8950, 9150, 9250, 9450, 9550, 9700, 9900, 10000, 10150, 10350, 10420, 10490, 10590, 10790, 10860, 11010, 11210,
   11360, 11560, 11710, 11910, 11920, 12020, 12220, 12420, 12620, 12770, 12970, 13170, 13370, 13520, 13670, 13870, 14070, 14270, 14470, 14570, 14770,
-  14970, 15170, 15370, 15570, 15770, 15840, 15940, 16140, 16340, 16440, 16640, 16840, 17040, 17240, 17390, 17590,
+  14970, 15170, 15370, 15570, 15770, 15840, 15940, 16140, 16340, 16440, 16640, 16840, 17040, 17240, 17390, 17590, 17600,
 ]
 
 const totalSupplies = [
@@ -24,19 +24,14 @@ const totalSupplies = [
 
 
 export function printToDrawingId(print) {
-  let foundIndex = 0
+  let foundIndex = initialPrintIndexes.length - 1
   for (let index = 0; index < initialPrintIndexes.length - 1; index++) {
-      if (index === initialPrintIndexes.length) {
-        foundIndex = index;
-        break;
-      }
-    if (print > initialPrintIndexes[index]) {
+    if (print >= initialPrintIndexes[index]) {
       if (print < initialPrintIndexes[index + 1]) {
         foundIndex = index;
         break;
       }
     }
-    
   }
   return drawingIds[foundIndex]
 }
