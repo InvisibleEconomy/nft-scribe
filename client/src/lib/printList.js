@@ -25,7 +25,7 @@ const totalSupplies = [
 
 export function printToDrawingId(print) {
   let foundIndex = 0
-  for (let index = 0; index < initialPrintIndexes.length; index++) {
+  for (let index = 0; index < initialPrintIndexes.length - 1; index++) {
       if (index === initialPrintIndexes.length) {
         foundIndex = index;
         break;
